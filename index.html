@@ -254,7 +254,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
-    /* Your existing CSS remains exactly the same */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
@@ -672,6 +671,122 @@
       font-weight: 600; font-size: 0.95rem; color: #fff;
     }
     .about-feat-text span { font-size: 0.8rem; color: var(--muted); }
+
+    /* OWNER SECTION — FIXED PHOTO */
+    .about-owner-section {
+      margin-top: 60px;
+      padding: 40px 30px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      border-left: 5px solid var(--orange);
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .owner-image-wrapper {
+      flex: 0 0 140px;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 4px solid var(--orange);
+      box-shadow: 0 8px 24px rgba(255,107,0,0.3);
+      flex-shrink: 0;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .owner-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .owner-image-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      color: var(--orange);
+      font-size: 3rem;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+    }
+    .owner-info {
+      flex: 1;
+      min-width: 200px;
+    }
+    .owner-info h3 {
+      font-size: 1.6rem;
+      color: #fff;
+      margin-bottom: 6px;
+      letter-spacing: 0.02em;
+    }
+    .owner-info h3 span {
+      color: var(--orange);
+    }
+    .owner-info .owner-title {
+      display: inline-block;
+      background: rgba(255,107,0,0.15);
+      border: 1px solid rgba(255,107,0,0.3);
+      color: var(--orange);
+      padding: 4px 16px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .owner-info p {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+    }
+    .owner-info .owner-quote {
+      font-style: italic;
+      color: #ccc;
+      border-left: 3px solid var(--orange);
+      padding-left: 16px;
+      margin-top: 10px;
+      font-size: 0.95rem;
+    }
+    .owner-info .owner-quote i {
+      color: var(--orange);
+      margin-right: 6px;
+    }
+
+    @media (max-width: 768px) {
+      .about-owner-section {
+        flex-direction: column;
+        text-align: center;
+        padding: 30px 20px;
+      }
+      .owner-image-wrapper {
+        flex: 0 0 120px;
+        width: 120px;
+        height: 120px;
+      }
+      .owner-info h3 {
+        font-size: 1.3rem;
+      }
+      .owner-info .owner-quote {
+        border-left: none;
+        padding-left: 0;
+        border-top: 2px solid var(--orange);
+        padding-top: 14px;
+      }
+    }
 
     .products-grid {
       display: grid;
@@ -1352,7 +1467,7 @@
   </div>
 </div>
 
-<!-- ABOUT -->
+<!-- ABOUT + FIXED OWNER SECTION -->
 <section class="section" id="about">
   <div class="container">
     <div class="about-grid">
@@ -1404,10 +1519,27 @@
         </div>
       </div>
     </div>
+
+    <!-- OWNER SECTION — FIXED: photo no longer cut off -->
+    <div class="about-owner-section reveal">
+      <div class="owner-image-wrapper">
+        <!-- Replace src with actual owner.jpg path. The image now uses object-fit:cover with absolute positioning so it scales perfectly inside the circle without being cropped awkwardly -->
+        <img src="https://raw.githubusercontent.com/solankiabhay/RollingShutter/main/shutter-img/owner.jpg" alt="Irfan Baig - Owner of AM Rolling Shutter" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=owner-image-placeholder>IB</div>';">
+      </div>
+      <div class="owner-info">
+        <h3>Meet <span>Irfan Baig</span></h3>
+        <div class="owner-title"><i class="fas fa-user-tie"></i> Founder & Lead Technician</div>
+        <p>With over 12 years of hands-on experience in the rolling shutter industry, Irfan Baig leads the AM Rolling Shutter team with precision and dedication. His deep understanding of every shutter mechanism — from manual springs to advanced motorized systems — ensures that every repair is done right the first time.</p>
+        <div class="owner-quote">
+          <i class="fas fa-quote-left"></i> 
+          "Our mission is to provide Pune with the fastest, most reliable rolling shutter repair service. We treat every shutter like it's our own."
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- PRODUCTS SECTION (Remains exactly the same) -->
+<!-- PRODUCTS SECTION (unchanged) -->
 <section class="section section-alt" id="products">
   <div class="container">
     <div class="reveal" style="text-align:center; max-width:600px; margin:0 auto;">
@@ -1647,15 +1779,11 @@
 	            <a href="#contact">Get Quote <i class="fas fa-arrow-right"></i></a>
 	          </div>
 	        </div>
-
-	  
-	  
-
     </div>
   </div>
 </section>
 
-<!-- WHY US (Remains same) -->
+<!-- WHY US (unchanged) -->
 <section class="section" id="why">
   <div class="container">
     <div class="reveal" style="text-align:center; max-width:600px; margin:0 auto;">
@@ -1674,7 +1802,7 @@
   </div>
 </section>
 
-<!-- PROCESS (Remains same) -->
+<!-- PROCESS (unchanged) -->
 <section class="section section-alt" id="process">
   <div class="container">
     <div class="reveal" style="text-align:center; max-width:600px; margin:0 auto;">
@@ -1691,7 +1819,7 @@
   </div>
 </section>
 
-<!-- GALLERY (Same as original) -->
+<!-- GALLERY (unchanged) -->
 <section class="section" id="gallery">
   <div class="container">
     <div class="reveal" style="text-align:center; max-width:600px; margin:0 auto;">
@@ -1848,7 +1976,7 @@
   </div>
 </section>
 
-<!-- TESTIMONIALS (Same) -->
+<!-- TESTIMONIALS (unchanged) -->
 <section class="section section-alt" id="testimonials">
   <div class="container">
     <div class="reveal" style="text-align:center; max-width:600px; margin:0 auto;">
@@ -1914,7 +2042,7 @@
   </div>
 </section>
 
-<!-- MAPS (Same) -->
+<!-- MAPS (unchanged) -->
 <section class="section" id="maps">
   <div class="container">
     <div class="reveal" style="text-align:center; max-width:600px; margin:0 auto;">
@@ -1978,7 +2106,7 @@
   </div>
 </section>
 
-<!-- CONTACT (Remains same) -->
+<!-- CONTACT (unchanged) -->
 <section class="section section-alt" id="contact">
   <div class="container">
     <div class="reveal" style="text-align:center; max-width:600px; margin:0 auto;">
@@ -2079,7 +2207,7 @@
   </div>
 </section>
 
-<!-- FOOTER (Same) -->
+<!-- FOOTER (unchanged) -->
 <footer>
   <div class="footer-grid">
     <div class="footer-brand reveal">
