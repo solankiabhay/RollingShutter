@@ -1,0 +1,336 @@
+# ============================================================
+# .htaccess — AM Rolling Shutter Engineering Work
+# https://www.rollingshutterrepair.in
+# Apache Configuration File
+# Last updated: 2026-10-13
+# ============================================================
+
+# Enable Rewrite Engine
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+</IfModule>
+
+# ============================================================
+# 1. FORCE HTTPS (Redirect HTTP → HTTPS)
+# ============================================================
+<IfModule mod_rewrite.c>
+  RewriteCond %{HTTPS} off
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# ============================================================
+# 2. FORCE WWW (Redirect non-www → www)
+# Matches canonical URLs: https://www.rollingshutterrepair.in/
+# ============================================================
+<IfModule mod_rewrite.c>
+  RewriteCond %{HTTP_HOST} !^www\. [NC]
+  RewriteCond %{HTTP_HOST} !^localhost [NC]
+  RewriteCond %{HTTP_HOST} !^127\.0\.0\.1 [NC]
+  RewriteRule ^(.*)$ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# ============================================================
+# 3. REDIRECT .html → FOLDER URL (trailing slash)
+# Example: /rolling-shutter-repair-wakad.html → /rolling-shutter-repair-wakad/
+# ============================================================
+<IfModule mod_rewrite.c>
+  RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
+  RewriteCond %{REQUEST_URI} !^/thank-you\.html$ [NC]
+  RewriteRule ^(.+)\.html$ /$1/ [R=301,L]
+</IfModule>
+
+# ============================================================
+# 4. ADD TRAILING SLASH TO DIRECTORIES
+# Example: /rolling-shutter-repair-wakad → /rolling-shutter-repair-wakad/
+# ============================================================
+<IfModule mod_rewrite.c>
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteCond %{REQUEST_URI} !/$
+  RewriteRule ^(.*)$ /$1/ [R=301,L]
+</IfModule>
+
+# ============================================================
+# 5. REMOVE index.html FROM URLS
+# Example: /rolling-shutter-repair-wakad/index.html → /rolling-shutter-repair-wakad/
+# ============================================================
+<IfModule mod_rewrite.c>
+  RewriteCond %{THE_REQUEST} \s/+(.*/)?index\.html[\s?] [NC]
+  RewriteRule ^(.*/)?index\.html$ /$1 [R=301,L]
+</IfModule>
+
+# ============================================================
+# 6. REDIRECT DIRECT .HTML ACCESS TO CLEAN URLS
+# Handles old bookmarks and backlinks
+# ============================================================
+<IfModule mod_rewrite.c>
+  RewriteRule ^rolling-shutter-repair-pune\.html$ /rolling-shutter-repair-pune/ [R=301,L]
+  RewriteRule ^rolling-shutter-repair-pune-camp\.html$ /rolling-shutter-repair-pune-camp/ [R=301,L]
+  RewriteRule ^rolling-shutter-repair-pimpri-chinchwad\.html$ /rolling-shutter-repair-pimpri-chinchwad/ [R=301,L]
+  RewriteRule ^rolling-shutter-repair-wakad\.html$ /rolling-shutter-repair-wakad/ [R=301,L]
+  RewriteRule ^rolling-shutter-repair-viman-nagar\.html$ /rolling-shutter-repair-viman-nagar/ [R=301,L]
+  RewriteRule ^rolling-shutter-repair-kothrud\.html$ /rolling-shutter-repair-kothrud/ [R=301,L]
+  RewriteRule ^rolling-shutter-repair-hadapsar\.html$ /rolling-shutter-repair-hadapsar/ [R=301,L]
+  RewriteRule ^rolling-shutter-repair-bhosari\.html$ /rolling-shutter-repair-bhosari/ [R=301,L]
+  RewriteRule ^rolling-shutter-repair-chakan\.html$ /rolling-shutter-repair-chakan/ [R=301,L]
+</IfModule>
+
+# ============================================================
+# 7. CUSTOM ERROR PAGES
+# ============================================================
+ErrorDocument 404 /404.html
+ErrorDocument 403 /404.html
+ErrorDocument 500 /404.html
+
+# ============================================================
+# 8. SECURITY HEADERS
+# ============================================================
+<IfModule mod_headers.c>
+  # Prevent MIME type sniffing
+  Header set X-Content-Type-Options "nosniff"
+  
+  # Prevent clickjacking
+  Header set X-Frame-Options "SAMEORIGIN"
+  
+  # Referrer policy
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  
+  # Permissions policy
+  Header set Permissions-Policy "geolocation=(self), microphone=(), camera=()"
+  
+  # XSS Protection (legacy browsers)
+  Header set X-XSS-Protection "1; mode=block"
+  
+  # Force HTTPS for 1 year (only after confirming HTTPS works)
+  Header set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+</IfModule>
+
+# ============================================================
+# 9. DISABLE DIRECTORY LISTING
+# Prevents showing all files when someone visits a folder
+# ============================================================
+Options -Indexes
+
+# ============================================================
+# 10. PROTECT SENSITIVE FILES
+# ============================================================
+<FilesMatch "^\.(htaccess|htpasswd|env|git|gitignore|gitattributes)$">
+  Require all denied
+</FilesMatch>
+
+<FilesMatch "\.(sql|log|bak|config|ini|yml|yaml|md|json|lock|sh)$">
+  Require all denied
+</FilesMatch>
+
+<Files "robots.txt">
+  Require all granted
+</Files>
+
+<Files "sitemap.xml">
+  Require all granted
+</Files>
+
+# ============================================================
+# 11. BLOCK BAD BOTS & SCRAPERS AT SERVER LEVEL
+# ============================================================
+<IfModule mod_rewrite.c>
+  RewriteCond %{HTTP_USER_AGENT} (ahrefs|semrush|mj12bot|dotbot|blexbot|megaindex|dataforseo|petalbot|bytespider|zoominfobot) [NC]
+  RewriteRule .* - [F,L]
+</IfModule>
+
+# ============================================================
+# 12. BLOCK COMMON EXPLOIT ATTEMPTS
+# ============================================================
+<IfModule mod_rewrite.c>
+  # Block WordPress probes
+  RewriteCond %{REQUEST_URI} (wp-admin|wp-login|wp-content|wp-includes|xmlrpc\.php) [NC]
+  RewriteRule .* - [F,L]
+  
+  # Block PHPMyAdmin probes
+  RewriteCond %{REQUEST_URI} (phpmyadmin|pma|myadmin) [NC]
+  RewriteRule .* - [F,L]
+  
+  # Block config file probes
+  RewriteCond %{REQUEST_URI} (config\.php|configuration\.php|settings\.php|\.env) [NC]
+  RewriteRule .* - [F,L]
+  
+  # Block script probes
+  RewriteCond %{QUERY_STRING} (<|%3C).*script.*(>|%3E) [NC]
+  RewriteRule .* - [F,L]
+  
+  # Block SQL injection probes
+  RewriteCond %{QUERY_STRING} (union.*select|concat.*\(|base64_) [NC]
+  RewriteRule .* - [F,L]
+</IfModule>
+
+# ============================================================
+# 13. COMPRESSION — GZIP / DEFLATE
+# Reduces file size by 60-80% for text files
+# ============================================================
+<IfModule mod_deflate.c>
+  # Compress HTML, CSS, JavaScript, Text, XML, fonts
+  AddOutputFilterByType DEFLATE text/html
+  AddOutputFilterByType DEFLATE text/plain
+  AddOutputFilterByType DEFLATE text/xml
+  AddOutputFilterByType DEFLATE text/css
+  AddOutputFilterByType DEFLATE text/javascript
+  AddOutputFilterByType DEFLATE text/x-component
+  AddOutputFilterByType DEFLATE application/javascript
+  AddOutputFilterByType DEFLATE application/x-javascript
+  AddOutputFilterByType DEFLATE application/json
+  AddOutputFilterByType DEFLATE application/xml
+  AddOutputFilterByType DEFLATE application/xhtml+xml
+  AddOutputFilterByType DEFLATE application/rss+xml
+  AddOutputFilterByType DEFLATE application/atom_xml
+  AddOutputFilterByType DEFLATE application/x-font
+  AddOutputFilterByType DEFLATE application/x-font-ttf
+  AddOutputFilterByType DEFLATE application/x-font-opentype
+  AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+  AddOutputFilterByType DEFLATE font/ttf
+  AddOutputFilterByType DEFLATE font/otf
+  AddOutputFilterByType DEFLATE font/opentype
+  AddOutputFilterByType DEFLATE image/svg+xml
+  
+  # Don't compress images (already compressed)
+  SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png|webp|ico|zip|gz|rar|7z|mp4|webm|mp3|ogg|wav|woff2)$ no-gzip dont-vary
+  
+  # Fix for old browsers
+  BrowserMatch ^Mozilla/4 gzip-only-text/html
+  BrowserMatch ^Mozilla/4\.0[678] no-gzip
+  BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+  
+  # Vary header for proxies
+  Header append Vary User-Agent env=!dont-vary
+</IfModule>
+
+# ============================================================
+# 14. BROWSER CACHING — Leverage Cache Headers
+# Tells browser to cache assets locally
+# ============================================================
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 1 month"
+  
+  # HTML — short cache (content changes)
+  ExpiresByType text/html "access plus 1 day"
+  
+  # CSS & JS — medium cache
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType text/javascript "access plus 1 month"
+  
+  # Images — long cache (rarely change)
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/jpg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/gif "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+  ExpiresByType image/vnd.microsoft.icon "access plus 1 year"
+  
+  # Fonts
+  ExpiresByType font/ttf "access plus 1 year"
+  ExpiresByType font/otf "access plus 1 year"
+  ExpiresByType font/woff "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType application/font-woff "access plus 1 year"
+  ExpiresByType application/font-woff2 "access plus 1 year"
+  
+  # Video / Audio
+  ExpiresByType video/mp4 "access plus 1 year"
+  ExpiresByType video/webm "access plus 1 year"
+  ExpiresByType audio/mpeg "access plus 1 year"
+  
+  # Data
+  ExpiresByType application/json "access plus 0 seconds"
+  ExpiresByType application/xml "access plus 0 seconds"
+  ExpiresByType text/xml "access plus 0 seconds"
+</IfModule>
+
+# ============================================================
+# 15. CACHE-CONTROL HEADERS (for browsers that don't use mod_expires)
+# ============================================================
+<IfModule mod_headers.c>
+  # Cache images, fonts, css, js for 1 year
+  <FilesMatch "\.(ico|jpg|jpeg|png|gif|webp|svg|css|js|woff|woff2|ttf|otf|eot)$">
+    Header set Cache-Control "max-age=31536000, public, immutable"
+  </FilesMatch>
+  
+  # Cache HTML for 1 day
+  <FilesMatch "\.(html|htm)$">
+    Header set Cache-Control "max-age=86400, public, must-revalidate"
+  </FilesMatch>
+  
+  # No cache for robots.txt and sitemap.xml (must be fresh)
+  <FilesMatch "(robots\.txt|sitemap\.xml)$">
+    Header set Cache-Control "max-age=3600, public"
+  </FilesMatch>
+</IfModule>
+
+# ============================================================
+# 16. MIME TYPES — Ensure correct content-type headers
+# ============================================================
+<IfModule mod_mime.c>
+  # Web fonts
+  AddType font/ttf .ttf
+  AddType font/otf .otf
+  AddType font/woff .woff
+  AddType font/woff2 .woff2
+  AddType application/vnd.ms-fontobject .eot
+  
+  # Images
+  AddType image/webp .webp
+  AddType image/svg+xml .svg
+  AddType image/svg+xml .svgz
+  
+  # Video
+  AddType video/mp4 .mp4
+  AddType video/webm .webm
+  
+  # Data
+  AddType application/json .json
+  AddType application/manifest+json .webmanifest
+  
+  # Character encoding
+  AddDefaultCharset UTF-8
+  AddCharset UTF-8 .html .css .js .xml .json .txt
+</IfModule>
+
+# ============================================================
+# 17. PREVENT HOTLINKING OF IMAGES
+# Prevents other sites from displaying your images
+# ============================================================
+<IfModule mod_rewrite.c>
+  RewriteCond %{HTTP_REFERER} !^$
+  RewriteCond %{HTTP_REFERER} !^https?://(www\.)?rollingshutterrepair\.in [NC]
+  RewriteCond %{HTTP_REFERER} !^https?://(www\.)?google\. [NC]
+  RewriteCond %{HTTP_REFERER} !^https?://(www\.)?bing\. [NC]
+  RewriteCond %{HTTP_REFERER} !^https?://(www\.)?facebook\. [NC]
+  RewriteCond %{HTTP_REFERER} !^https?://(www\.)?instagram\. [NC]
+  RewriteCond %{HTTP_REFERER} !^https?://(www\.)?whatsapp\. [NC]
+  RewriteRule \.(jpg|jpeg|png|gif|webp|svg)$ - [F,NC,L]
+</IfModule>
+
+# ============================================================
+# 18. DISABLE SERVER SIGNATURE
+# Hides Apache version (security through obscurity)
+# ============================================================
+ServerSignature Off
+
+# ============================================================
+# 19. LIMIT REQUEST SIZE (prevent DoS)
+# ============================================================
+LimitRequestBody 10485760
+
+# ============================================================
+# 20. PREVENT SCRIPT EXECUTION IN UPLOAD DIRS
+# (In case you ever add uploads)
+# ============================================================
+<IfModule mod_rewrite.c>
+  RewriteRule ^(uploads|images|assets)/.*\.(php|phtml|php3|php4|php5|php7|phps|pl|py|jsp|asp|sh|cgi)$ - [F,L,NC]
+</IfModule>
+
+# ============================================================
+# END OF .htaccess
+# ============================================================
