@@ -1591,6 +1591,102 @@
     .lang-actions .la-wa { background: #25D366; }
     @media (max-width: 900px) { .lang-grid { grid-template-columns: 1fr; } }
     @media (max-width: 768px) { .lang-band { padding: 48px 16px; } }
+
+    /* ============================================================
+       ADDED: AUTO IMAGE SLIDER (16 images) — after Project Gallery
+       ============================================================ */
+    .slider-section {
+      padding: 80px 20px;
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .slider-wrap {
+      position: relative;
+      max-width: 1000px;
+      margin: 40px auto 0;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      background: #111;
+    }
+    .slider-track {
+      display: flex;
+      align-items: center;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform;
+    }
+    .slider-slide {
+      min-width: 100%;
+      position: relative;
+      background: #1a1a1a;
+    }
+    .slider-slide img {
+      display: block;
+      width: 100%;
+      height: auto;            /* height follows the image, so it fills the full width */
+      max-height: 75vh;        /* stops very tall photos from becoming huge */
+      object-fit: contain;
+      user-select: none;
+      pointer-events: none;
+      background: #111;
+    }
+    .slider-slide.img-failed img { display: none; }
+    .slider-slide .slider-fallback {
+      display: none;
+      width: 100%;
+      height: 500px;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 10px;
+      color: #777;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: repeating-linear-gradient(45deg, #1a1a1a, #1a1a1a 20px, #222 20px, #222 40px);
+    }
+    .slider-slide .slider-fallback i { font-size: 2.4rem; color: var(--orange); opacity: 0.8; }
+    .slider-slide.img-failed .slider-fallback { display: flex; }
+
+    .slider-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+    .slider-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      border: none;
+      background: #444;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+      padding: 0;
+    }
+    .slider-dot.active {
+      background: var(--orange);
+      transform: scale(1.3);
+    }
+    .slider-dot:focus-visible {
+      outline: 2px solid var(--orange);
+      outline-offset: 3px;
+    }
+    @media (max-width: 768px) {
+      .slider-section { padding: 56px 16px; }
+      .slider-slide .slider-fallback { height: 260px; }
+      .slider-dots { gap: 6px; margin-top: 18px; }
+      .slider-dot { width: 8px; height: 8px; }
+      .slider-slide .slider-fallback { font-size: 0.85rem; }
+      .slider-slide .slider-fallback i { font-size: 1.8rem; }
+    }
+    @media (max-width: 400px) {
+      .slider-slide .slider-fallback { height: 200px; }
+    }
   </style>
 </head>
 <body>
@@ -1804,6 +1900,97 @@
     </div>
   </div>
 </section>
+
+<!-- ============================================================
+     ADDED: AUTO IMAGE SLIDER (16 images) — after Project Gallery
+     ============================================================ -->
+<section class="slider-section" id="image-slider" aria-labelledby="slider-title">
+  <div class="container">
+    <div class="reveal" style="text-align:center; max-width:600px; margin:0 auto;">
+      <div class="section-tag">Gallery Showcase</div>
+      <h2 class="section-title" id="slider-title">Our Work <span>in Pictures</span></h2>
+      <div class="divider" style="margin:20px auto 0;"></div>
+      <p class="section-sub" style="margin:0 auto;">Auto-sliding showcase of our rolling shutter repair, installation and maintenance projects across Pune.</p>
+    </div>
+
+    <div class="slider-wrap reveal">
+      <div class="slider-track" id="sliderTrack">
+        <div class="slider-slide">
+          <img src="https://raw.githubusercontent.com/solankiabhay/RollingShutter/main/shutter-img/image0.jpeg" alt="Rolling shutter project 1" loading="lazy" onerror="this.closest('.slider-slide').classList.add('img-failed')">
+          <div class="slider-fallback"><i class="fas fa-image"></i> Image 1</div>
+        </div>
+        <div class="slider-slide">
+          <img src="https://raw.githubusercontent.com/solankiabhay/RollingShutter/main/shutter-img/image1.jpeg" alt="Rolling shutter project 1" loading="lazy" onerror="this.closest('.slider-slide').classList.add('img-failed')">
+          <div class="slider-fallback"><i class="fas fa-image"></i> Image 1</div>
+        </div>
+        <div class="slider-slide">
+          <img src="https://raw.githubusercontent.com/solankiabhay/RollingShutter/main/shutter-img/image2.jpeg" alt="Rolling shutter project 2" loading="lazy" onerror="this.closest('.slider-slide').classList.add('img-failed')">
+          <div class="slider-fallback"><i class="fas fa-image"></i> Image 2</div>
+        </div>
+        <div class="slider-slide">
+          <img src="https://raw.githubusercontent.com/solankiabhay/RollingShutter/main/shutter-img/image3.jpeg" alt="Rolling shutter project 3" loading="lazy" onerror="this.closest('.slider-slide').classList.add('img-failed')">
+          <div class="slider-fallback"><i class="fas fa-image"></i> Image 3</div>
+        </div>
+        <div class="slider-slide">
+          <img src="https://raw.githubusercontent.com/solankiabhay/RollingShutter/main/shutter-img/image4.jpeg" alt="Rolling shutter project 4" loading="lazy" onerror="this.closest('.slider-slide').classList.add('img-failed')">
+          <div class="slider-fallback"><i class="fas fa-image"></i> Image 4</div>
+        </div>
+        <div class="slider-slide">
+          <img src="https://raw.githubusercontent.com/solankiabhay/RollingShutter/main/shutter-img/image5.jpeg" alt="Rolling shutter project 5" loading="lazy" onerror="this.closest('.slider-slide').classList.add('img-failed')">
+          <div class="slider-fallback"><i class="fas fa-image"></i> Image 5</div>
+        </div>
+        <div class="slider-slide">
+          <img src="https://raw.githubusercontent.com/solankiabhay/RollingShutter/main/shutter-img/image6.jpeg" alt="Rolling shutter project 6" loading="lazy" onerror="this.closest('.slider-slide').classList.add('img-failed')">
+          <div class="slider-fallback"><i class="fas fa-image"></i> Image 6</div>
+        </div>
+        <div class="slider-slide">
+          <img src="https://raw.githubusercontent.com/solankiabhay/RollingShutter/main/shutter-img/image7.jpeg" alt="Rolling shutter project 7" loading="lazy" onerror="this.closest('.slider-slide').classList.add('img-failed')">
+          <div class="slider-fallback"><i class="fas fa-image"></i> Image 7</div>
+        </div>
+        <div class="slider-slide">
+          <img src="https://raw.githubusercontent.com/solankiabhay/RollingShutter/main/shutter-img/image8.jpeg" alt="Rolling shutter project 8" loading="lazy" onerror="this.closest('.slider-slide').classList.add('img-failed')">
+          <div class="slider-fallback"><i class="fas fa-image"></i> Image 8</div>
+        </div>
+        <div class="slider-slide">
+          <img src="https://raw.githubusercontent.com/solankiabhay/RollingShutter/main/shutter-img/image9.jpeg" alt="Rolling shutter project 9" loading="lazy" onerror="this.closest('.slider-slide').classList.add('img-failed')">
+          <div class="slider-fallback"><i class="fas fa-image"></i> Image 9</div>
+        </div>
+        <div class="slider-slide">
+          <img src="https://raw.githubusercontent.com/solankiabhay/RollingShutter/main/shutter-img/image10.jpeg" alt="Rolling shutter project 10" loading="lazy" onerror="this.closest('.slider-slide').classList.add('img-failed')">
+          <div class="slider-fallback"><i class="fas fa-image"></i> Image 10</div>
+        </div>
+        <div class="slider-slide">
+          <img src="https://raw.githubusercontent.com/solankiabhay/RollingShutter/main/shutter-img/image11.jpeg" alt="Rolling shutter project 11" loading="lazy" onerror="this.closest('.slider-slide').classList.add('img-failed')">
+          <div class="slider-fallback"><i class="fas fa-image"></i> Image 11</div>
+        </div>
+        <div class="slider-slide">
+          <img src="https://raw.githubusercontent.com/solankiabhay/RollingShutter/main/shutter-img/image12.jpeg" alt="Rolling shutter project 12" loading="lazy" onerror="this.closest('.slider-slide').classList.add('img-failed')">
+          <div class="slider-fallback"><i class="fas fa-image"></i> Image 12</div>
+        </div>
+        <div class="slider-slide">
+          <img src="https://raw.githubusercontent.com/solankiabhay/RollingShutter/main/shutter-img/image13.jpeg" alt="Rolling shutter project 13" loading="lazy" onerror="this.closest('.slider-slide').classList.add('img-failed')">
+          <div class="slider-fallback"><i class="fas fa-image"></i> Image 13</div>
+        </div>
+        <div class="slider-slide">
+          <img src="https://raw.githubusercontent.com/solankiabhay/RollingShutter/main/shutter-img/image14.jpeg" alt="Rolling shutter project 14" loading="lazy" onerror="this.closest('.slider-slide').classList.add('img-failed')">
+          <div class="slider-fallback"><i class="fas fa-image"></i> Image 14</div>
+        </div>
+        <div class="slider-slide">
+          <img src="https://raw.githubusercontent.com/solankiabhay/RollingShutter/main/shutter-img/image15.jpeg" alt="Rolling shutter project 15" loading="lazy" onerror="this.closest('.slider-slide').classList.add('img-failed')">
+          <div class="slider-fallback"><i class="fas fa-image"></i> Image 15</div>
+        </div>
+        <div class="slider-slide">
+          <img src="https://raw.githubusercontent.com/solankiabhay/RollingShutter/main/shutter-img/image16.jpeg" alt="Rolling shutter project 16" loading="lazy" onerror="this.closest('.slider-slide').classList.add('img-failed')">
+          <div class="slider-fallback"><i class="fas fa-image"></i> Image 16</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slider-dots" id="sliderDots" role="tablist" aria-label="Image slider navigation"></div>
+  </div>
+</section>
+
+
 
 <!-- SERVICES -->
 <section class="section section-alt" id="products">
@@ -2412,6 +2599,7 @@
   </div>
 </section>
 
+
 <!-- TESTIMONIALS -->
 <section class="section" id="testimonials">
   <div class="container">
@@ -2957,6 +3145,98 @@
       }
     });
     update();
+  })();
+</script>
+
+<!-- ============================================================
+     ADDED: AUTO IMAGE SLIDER (16 images) — after Project Gallery
+     ============================================================ -->
+<script>
+  (function () {
+    var track = document.getElementById('sliderTrack');
+    if (!track) return;
+    var slides = track.querySelectorAll('.slider-slide');
+    if (!slides.length) return;
+    var total = slides.length;
+    var index = 0;
+    var intervalMs = 4000;
+    var timer = null;
+
+    // Build dots
+    var dotsContainer = document.getElementById('sliderDots');
+    var dots = [];
+    if (dotsContainer) {
+      for (var i = 0; i < total; i++) {
+        (function (n) {
+          var btn = document.createElement('button');
+          btn.className = 'slider-dot' + (n === 0 ? ' active' : '');
+          btn.setAttribute('role', 'tab');
+          btn.setAttribute('aria-label', 'Go to slide ' + (n + 1));
+          btn.addEventListener('click', function () {
+            goTo(n);
+            restart();
+          });
+          dotsContainer.appendChild(btn);
+          dots.push(btn);
+        })(i);
+      }
+    }
+
+    function goTo(n) {
+      index = ((n % total) + total) % total;
+      track.style.transform = 'translateX(-' + (index * 100) + '%)';
+      dots.forEach(function (d, i) {
+        d.classList.toggle('active', i === index);
+      });
+    }
+
+    function next() {
+      goTo(index + 1);
+    }
+
+    function start() {
+      if (timer) clearInterval(timer);
+      timer = setInterval(next, intervalMs);
+    }
+
+    function stop() {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+    }
+
+    function restart() {
+      stop();
+      start();
+    }
+
+    // Pause on hover/focus for better UX
+    var wrap = track.closest('.slider-wrap');
+    if (wrap) {
+      wrap.addEventListener('mouseenter', stop);
+      wrap.addEventListener('mouseleave', start);
+      wrap.addEventListener('focusin', stop);
+      wrap.addEventListener('focusout', start);
+    }
+
+    // Respect reduced motion
+    var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (!mq.matches) {
+      start();
+    }
+
+    // Handle visibility change
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) {
+        stop();
+      } else if (!mq.matches) {
+        start();
+      }
+    });
+
+    // Initial position
+    goTo(0);
   })();
 </script>
 
